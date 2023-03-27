@@ -28,6 +28,7 @@ const styles = StyleSheet.create({
          color:"white",
          borderRadius:10,
          marginBottom:30,
+         marginTop:20,
     },
     loginbuttonText:{
                 fontWeight:"700", 
