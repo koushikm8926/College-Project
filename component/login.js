@@ -1,4 +1,4 @@
-import React,{ useState } from "react";
+import React,{ useState,useRef } from "react";
 import { styles,  } from "../styles/login page style";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
@@ -10,10 +10,54 @@ import {
     TextInput,ScrollView, Image} from "react-native";
 
 import { SelectList } from 'react-native-dropdown-select-list'
+import { firebaseConfig } from '../config';
+import { FirebaseRecaptchaVerifierModal } from 'expo-firebase-recaptcha';
+import firebase from 'firebase/compat/app';
+
 
 export default function Register({navigation}){
 
-    
+    const [phoneNumber, setphoneNumber]=useState('');
+    const [code, setcode]=useState('');
+    const [verificationId, setverificationId]=useState('');
+    const recaptchaVerifier= useRef(null);
+
+    const [selected, setSelected] = useState("");
+   const [number, setNumber] = useState("");
+   const data = [
+       {key:'1', value:'Male',},
+       {key:'2', value:'Female'},
+       {key:'4', value:'Other',},  
+   ]
+
+   const sendVerification = () => {
+    const phoneProvider = new firebase.auth.PhoneAuthProvider();
+    phoneProvider
+        .verifyPhoneNumber(phoneNumber, recaptchaVerifier.current)
+        .then(setverificationId);
+        setphoneNumber('');
+        
+   };
+
+
+   const confirmCode =()=>{
+    const credential = firebase.auth.PhoneAuthProvider.credential(
+        verificationId,
+        code
+    );
+    firebase.auth().signInWithCredential(credential)
+    .then(()=>{
+        setcode('');
+
+    })
+    .catch((error)=>{
+        //show an aleart in case of error
+        alert(error);
+    })
+    Alert.alert(
+        'Login successful. Welcome To Dashboard',
+    );
+   }
 
     const [RegData,setRegData]=useState({
         Fname:"",
@@ -24,26 +68,23 @@ export default function Register({navigation}){
         gender:"",
     })
 
-    const data = [
-        {key:'1', value:'Male',},
-        {key:'2', value:'Female'},
-        {key:'4', value:'Other',},  
-    ]
-
     return(
-    <SafeAreaView style={{flex:1, backgroundColor:'whitesmoke'}}>  
+       
+    <SafeAreaView style={{marginTop:35,}}>  
+  
     <View style={{
-            height: 300,
+            height: 800,
             backgroundColor:'#a3c7c7',
             // backgroundColor: 'rgba(255,255,255,0.5)',
             borderBottomLeftRadius: 40, 
-            borderBottomRightRadius: 40
+            borderBottomRightRadius: 40,
+            alignItems:'center',
             }}>
-                <Image source={require('../assets/logo.png')} style={{height:100, width:100, marginLeft:140, marginTop:40, borderRadius:50}}></Image>
-                <Text style={{fontSize:25,fontWeight:'bold', color:'white', marginLeft:20,}}> Sign in </Text>
-                <Text style={{fontSize:20, color:'white', marginLeft:22, marginTop:10}}>Sign in to generate your QR Code</Text>
-
-            <View style={{height:500, width:350, backgroundColor:'whitesmoke', borderRadius:30, marginTop:30, marginLeft:20, padding:20, borderWidth:2, borderColor:'#a3c7c7' }}>
+                <Image source={require('../assets/logo.png')} style={{height:100, width:100,  marginTop:40, borderRadius:50}}></Image>
+                <Text style={{fontSize:25,fontWeight:'bold', color:'white', marginLeft:20,}}>Register </Text>
+                <Text style={{fontSize:20, color:'white', marginLeft:22, marginTop:10}}>Register to generate your QR Code</Text>
+{/* <ScrollView style={{height:800,}}> */}
+        <ScrollView style={{height:800, width:350, backgroundColor:'white' , borderRadius:30, marginTop:30, padding:20, borderWidth:2, borderColor:'#a3c7c7' }} showsVerticalScrollIndicator={false}>
 
             <View style={styles.inputview}>
         <MaterialIcons name="person" size={20} color="blue" style={{marginRight:10,padding:5,}}/>
@@ -60,7 +101,7 @@ export default function Register({navigation}){
         <TextInput placeholder="Phone number" style={styles.TextInput} keyboardType="numeric" onChangeText={phoneNumber=>setRegData({...RegData,phoneNumber})}/>
         </View>
 
-        <View style={[styles.inputview,{marginTop:20}]}>
+        <View style={[styles.inputview]}>
         <MaterialIcons name="email" size={20} color="blue" style={{marginRight:10,padding:5,}}/>
         <TextInput placeholder="Email" style={styles.TextInput} keyboardType="email-address" onChangeText={Email=>setRegData({...RegData,Email})}/>    
         </View>
@@ -82,13 +123,46 @@ export default function Register({navigation}){
        
         </View>
 
-        <TouchableOpacity onPress={()=>navigation.navigate('OTP-auth')} style={styles.loginButton}>
+             <FirebaseRecaptchaVerifierModal
+            ref={recaptchaVerifier}
+            firebaseConfig={firebaseConfig}
+            />
+
+        <TouchableOpacity onPress={sendVerification}   style={styles.loginButton}>
         <Text style={styles.loginbuttonText}>Register</Text>
         </TouchableOpacity> 
 
-            </View>
-            </View>
 
+        
+        <View style={styles.inputview}>
+        <TextInput placeholder="Confirm otp" onChangeText={setcode} style={styles.TextInput} keyboardType="numeric"/>
+        </View>
+
+
+        <View style={{marginTop:20,}}>
+        <TouchableOpacity style={{backgroundColor:"#42DAFF",
+         height:50 , 
+         width:300,
+         color:"white",
+        //  borderRadius:20,
+         marginBottom:30,}} onPress={confirmCode}>
+        <Text style={{  fontWeight:"700", 
+                fontSize:16,
+                textAlign:"center",
+                color:"white",
+                marginTop:10,}}>Confirm code</Text>
+        </TouchableOpacity>  
+        </View>
+        
+
+            </ScrollView>
+            {/* </ScrollView> */}
+
+            </View>
+           
     </SafeAreaView>
+ 
     );
 }
+
+
