@@ -1,5 +1,5 @@
 import React,{ useState } from "react";
-import { styles } from "../styles/login page style";
+import { styles,  } from "../styles/login page style";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import { 
@@ -7,7 +7,7 @@ import {
     Text,
     TouchableOpacity, 
     SafeAreaView ,
-    TextInput,ScrollView} from "react-native";
+    TextInput,ScrollView, Image} from "react-native";
 
 import { SelectList } from 'react-native-dropdown-select-list'
 
@@ -31,18 +31,25 @@ export default function Register({navigation}){
     ]
 
     return(
-    <SafeAreaView style={{flex:1,justifyContent:"center",}}>  
-    <ScrollView style={{marginTop:60}} > 
-        <View style={{marginHorizontal:25}}>
-        
-        <Text style={styles.loginText}>Registration Form</Text>
-        
+    <SafeAreaView style={{flex:1, backgroundColor:'whitesmoke'}}>  
+    <View style={{
+            height: 300,
+            backgroundColor:'#a3c7c7',
+            // backgroundColor: 'rgba(255,255,255,0.5)',
+            borderBottomLeftRadius: 40, 
+            borderBottomRightRadius: 40
+            }}>
+                <Image source={require('../assets/logo.png')} style={{height:100, width:100, marginLeft:140, marginTop:40, borderRadius:50}}></Image>
+                <Text style={{fontSize:25,fontWeight:'bold', color:'white', marginLeft:20,}}> Sign in </Text>
+                <Text style={{fontSize:20, color:'white', marginLeft:22, marginTop:10}}>Sign in to generate your QR Code</Text>
 
-        <View style={styles.inputview}>
+            <View style={{height:500, width:350, backgroundColor:'whitesmoke', borderRadius:30, marginTop:30, marginLeft:20, padding:20, borderWidth:2, borderColor:'#a3c7c7' }}>
+
+            <View style={styles.inputview}>
         <MaterialIcons name="person" size={20} color="blue" style={{marginRight:10,padding:5,}}/>
         <TextInput placeholder="First Name" style={styles.TextInput} keyboardType="name-phone-pad" onChangeText={Fname=>setRegData({...RegData,Fname})}/>    
         </View>
-        
+
         <View style={styles.inputview}>
         <MaterialIcons name="person" size={20} color="blue" style={{marginRight:10,padding:5,}}/>
         <TextInput placeholder="Last Name" style={styles.TextInput} keyboardType="name-phone-pad" onChangeText={Lname=>setRegData({...RegData,Lname})}/>    
@@ -75,21 +82,13 @@ export default function Register({navigation}){
        
         </View>
 
-        <TouchableOpacity onPress={()=>navigation.navigate('')} style={styles.loginButton}>
+        <TouchableOpacity onPress={()=>navigation.navigate('OTP-auth')} style={styles.loginButton}>
         <Text style={styles.loginbuttonText}>Register</Text>
         </TouchableOpacity> 
 
-        
-        {/* <Text>{RegData.Fname}</Text>
-        <Text>{RegData.Lname}</Text>
-        <Text>{RegData.phoneNumber}</Text>
-        <Text>{RegData.Email}</Text> 
-        <Text>{RegData.password}</Text>
-        <Text>{RegData.gender}</Text> */}
+            </View>
+            </View>
 
-            
-    </View>
-    </ScrollView>
     </SafeAreaView>
     );
 }
