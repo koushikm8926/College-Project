@@ -1,27 +1,85 @@
 
-## College-Project
-     In this React Native project we are using two factor authentication using firebase where users are able  to  register only one time with one phone number and one email id. And after registration users will get a QR Code which includes registered data of user.   
+<p align="center">
+ <img src="https://i.imgur.com/rSyq3MW.png" alt="The Documentation Compendium"></a>
+</p>
+
+<h3 align="center">The Documentation Compendium</h3>
+
+<div align="center">
+
+  [![Status](https://img.shields.io/badge/status-active-success.svg)]()
+  [![GitHub Pull Requests](https://img.shields.io/github/issues-pr/kylelobo/The-Documentation-Compendium.svg)](https://github.com/koushikm8926/Capston-Project/pulls)
+
+<!--   <a href="https://www.producthunt.com/posts/the-documentation-compendium?utm_source=badge-top-post-badge&utm_medium=badge&utm_souce=badge-the-documentation-compendium" target="_blank"><img src="https://api.producthunt.com/widgets/embed-image/v1/top-post-badge.svg?post_id=157965&theme=dark&period=daily" alt="The Documentation Compendium - Beautiful README templates that people want to read. | Product Hunt Embed" style="width: 250px; height: 54px;" width="250px" height="54px" /></a> -->
+
+</div>
+
+# Capston-project
+> Short blurb about what your product does.
+
+
+[![NPM Version][npm-image]][npm-url]
+[![Build Status][travis-image]][travis-url]
+[![Downloads Stats][npm-downloads]][npm-url]
+
+This Repo is created under college project.We are developing an QR code generator application.
+
+
+
+
+<!-- GETTING STARTED -->
+## Getting Started
+
+This is an example of how you may give instructions on setting up your project locally.
+To get a local copy up and running follow these simple example steps.
+
 ## Installation
-windows: 
-     
-     npm install -g 
+
+Windows:
+
+```sh
+npm install -g 
+```
+## Development setup
+Thease are thedependencies that needs to be installed to run the project.
+
+```sh
+@react-navigation/native
+```
+```sh
+@react-navigation/native-stack
+```
+```sh
+react-native-screens
+```
+```sh
+npm install react-native-safe-area-context
+```
+```sh
+react-native-vector-icons
+```
+```sh
+expo start
+```
+
+<!-- ROADMAP -->
+## Roadmap
+
+- [x] Create User Interface
+- [X] Add Firebase
+- [ ] Add Additional Components
 
 
+See the [open issues](https://github.com/koushikm8926/Capston-Project/issues) for a full list of proposed features (and known issues).
 
-## Development Setup
-    These are the dependencies that needs to be installed to run this project.
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-    npm install -g
+<!-- LICENSE -->
+## License
 
-    npm install react-native-gesture-handler
+Distributed under the MIT License. See `LICENSE.txt` for more information.
 
-    npm install react-native-web
-
-    npm install react-native-safe-area-context
-
-    npm install react-native-vector-icons
-
-    expo start
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- CONTRIBUTING -->
 ## Contributing
@@ -36,3 +94,13 @@ Don't forget to give the project a star! Thanks again!
 3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
 4. Push to the Branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+<!-- Markdown link & img dfn's -->
+[npm-image]: https://img.shields.io/npm/v/datadog-metrics.svg?style=flat-square
+[npm-url]: https://npmjs.org/package/datadog-metrics
+[npm-downloads]: https://img.shields.io/npm/dm/datadog-metrics.svg?style=flat-square
+[travis-image]: https://img.shields.io/travis/dbader/node-datadog-metrics/master.svg?style=flat-square
+[travis-url]: https://travis-ci.org/dbader/node-datadog-metrics
+[wiki]: https://github.com/yourname/yourproject/wiki
