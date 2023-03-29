@@ -17,47 +17,10 @@ import firebase from 'firebase/compat/app';
 
 export default function Register({navigation}){
 
-    const [phoneNumber, setphoneNumber]=useState('');
+   
     const [code, setcode]=useState('');
-    const [verificationId, setverificationId]=useState('');
+    const [verificationId, setVerificationId]=useState('');
     const recaptchaVerifier= useRef(null);
-
-    const [selected, setSelected] = useState("");
-   const [number, setNumber] = useState("");
-   const data = [
-       {key:'1', value:'Male',},
-       {key:'2', value:'Female'},
-       {key:'4', value:'Other',},  
-   ]
-
-   const sendVerification = () => {
-    const phoneProvider = new firebase.auth.PhoneAuthProvider();
-    phoneProvider
-        .verifyPhoneNumber(phoneNumber, recaptchaVerifier.current)
-        .then(setverificationId);
-        setphoneNumber('');
-        
-   };
-
-
-   const confirmCode =()=>{
-    const credential = firebase.auth.PhoneAuthProvider.credential(
-        verificationId,
-        code
-    );
-    firebase.auth().signInWithCredential(credential)
-    .then(()=>{
-        setcode('');
-
-    })
-    .catch((error)=>{
-        //show an aleart in case of error
-        alert(error);
-    })
-    Alert.alert(
-        'Login successful. Welcome To Dashboard',
-    );
-   }
 
     const [RegData,setRegData]=useState({
         Fname:"",
@@ -68,9 +31,69 @@ export default function Register({navigation}){
         gender:"",
     })
 
+   const data = [
+       {key:'1', value:'Male',},
+       {key:'2', value:'Female'},
+       {key:'4', value:'Other',},  
+   ]
+
+   const sendVerification =  async () => {
+    try{
+
+    const phoneProvider = new firebase.auth.PhoneAuthProvider();
+    
+    const veriy= await phoneProvider.verifyPhoneNumber(RegData.phoneNumber, recaptchaVerifier.current) 
+        alert("OTP send ")
+        navigation.navigate("OTP-auth",{paramKey:veriy,paramKey2:RegData})
+        setVerificationId(veriy)
+    }
+    
+    catch(e){
+        console.log(e)
+        alert("Errorrrrrr",e)
+    }
+};
+   
+
+
+//    const confirmCode = async ()=>{
+
+//     try{
+//         console.log(verificationId,"lalala")
+//     const credential = firebase.auth.PhoneAuthProvider.credential(
+//         verificationId,
+//         code
+//     );
+
+//      await firebase.auth().signInWithCredential(credential)
+//     .then(()=>{
+//         // setcode('');
+//         navigation.navigate("QR_code_Page",{paramKey:RegData})
+
+
+//     })
+//     .catch((error)=>{
+//         //show an aleart in case of error
+//         alert(error);
+//     })
+    
+//    }
+//    catch(e){
+//     alert("Error",e)
+//    }
+// }
+
+   
+
     return(
        
-    <SafeAreaView style={{marginTop:35,}}>  
+    <SafeAreaView style={{marginTop:35,}}> 
+    <FirebaseRecaptchaVerifierModal
+    style={{margin:100}}
+        ref={recaptchaVerifier}
+        firebaseConfig={firebaseConfig}
+
+        />
   
     <View style={{
             height: 800,
@@ -84,34 +107,34 @@ export default function Register({navigation}){
                 <Text style={{fontSize:25,fontWeight:'bold', color:'white', marginLeft:20,}}>Register </Text>
                 <Text style={{fontSize:20, color:'white', marginLeft:22, marginTop:10}}>Register to generate your QR Code</Text>
 {/* <ScrollView style={{height:800,}}> */}
-        <ScrollView style={{height:800, width:350, backgroundColor:'white' , borderRadius:30, marginTop:30, padding:20, borderWidth:2, borderColor:'#a3c7c7' }} showsVerticalScrollIndicator={false}>
-
+        <ScrollView style={{height:800, width:350, backgroundColor:'white' , borderRadius:30, marginTop:30, padding:20, marginBottom:60, borderWidth:2, borderColor:'#a3c7c7' }} showsVerticalScrollIndicator={false}>
+            
             <View style={styles.inputview}>
         <MaterialIcons name="person" size={20} color="blue" style={{marginRight:10,padding:5,}}/>
-        <TextInput placeholder="First Name" style={styles.TextInput} keyboardType="name-phone-pad" onChangeText={Fname=>setRegData({...RegData,Fname})}/>    
+        <TextInput value={RegData.Fname} placeholder="First Name" style={styles.TextInput} keyboardType="name-phone-pad" onChangeText={Fname=>setRegData({...RegData,Fname})}/>    
         </View>
 
         <View style={styles.inputview}>
         <MaterialIcons name="person" size={20} color="blue" style={{marginRight:10,padding:5,}}/>
-        <TextInput placeholder="Last Name" style={styles.TextInput} keyboardType="name-phone-pad" onChangeText={Lname=>setRegData({...RegData,Lname})}/>    
+        <TextInput value={RegData.Lname} placeholder="Last Name" style={styles.TextInput} keyboardType="name-phone-pad" onChangeText={Lname=>setRegData({...RegData,Lname})}/>    
         </View>
 
         <View style={styles.inputview}>
-        <MaterialIcons name="phone" size={20} color="blue" style={{marginRight:10,padding:5,}}/>
-        <TextInput placeholder="Phone number" style={styles.TextInput} keyboardType="numeric" onChangeText={phoneNumber=>setRegData({...RegData,phoneNumber})}/>
+        <MaterialIcons  name="phone" size={20} color="blue" style={{marginRight:10,padding:5,}}/>
+        <TextInput require={true} value={RegData.phoneNumber} placeholder="Phone number" style={styles.TextInput} keyboardType="phone-pad" onChangeText={phoneNumber=>setRegData({...RegData,phoneNumber})}/>
         </View>
 
         <View style={[styles.inputview]}>
         <MaterialIcons name="email" size={20} color="blue" style={{marginRight:10,padding:5,}}/>
-        <TextInput placeholder="Email" style={styles.TextInput} keyboardType="email-address" onChangeText={Email=>setRegData({...RegData,Email})}/>    
+        <TextInput value={RegData.Email} placeholder="Email" style={styles.TextInput} keyboardType="email-address" onChangeText={Email=>setRegData({...RegData,Email})}/>    
         </View>
 
         <View style={styles.inputview}>
         <Ionicons name="ios-lock-closed" size={20} color="blue" style={{marginRight:10,padding:5,}}/>
-        <TextInput placeholder="Password" secureTextEntry={true}  style={styles.TextInput} onChangeText={password=>setRegData({...RegData,password})} /> 
+        <TextInput value={RegData.password} placeholder="Password" secureTextEntry={true}  style={styles.TextInput} onChangeText={password=>setRegData({...RegData,password})} /> 
         </View>
 
-        <View style={{flexDirection:'row',alignItems:'center',}}>
+        <View style={{flexDirection:'row',alignItems:'center'}}>
        <MaterialIcons name="person" size={20} color="blue" style={{marginRight:10,}}/>
        <Text style={{marginRight:20,}}>Select gender</Text>
      
@@ -133,13 +156,14 @@ export default function Register({navigation}){
         </TouchableOpacity> 
 
 
-        
+{/*         
         <View style={styles.inputview}>
         <TextInput placeholder="Confirm otp" onChangeText={setcode} style={styles.TextInput} keyboardType="numeric"/>
         </View>
 
 
         <View style={{marginTop:20,}}>
+            
         <TouchableOpacity style={{backgroundColor:"#42DAFF",
          height:50 , 
          width:300,
@@ -152,7 +176,7 @@ export default function Register({navigation}){
                 color:"white",
                 marginTop:10,}}>Confirm code</Text>
         </TouchableOpacity>  
-        </View>
+        </View> */}
         
 
             </ScrollView>
