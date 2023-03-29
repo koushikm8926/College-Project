@@ -22,8 +22,6 @@ function QR_page({route}) {
       value={JSON.stringify(data.paramKey)}
       logoSize={200}
       size={190}
-    
-     
       color="black"
     />
     <View>
