@@ -3,13 +3,20 @@ import 'firebase/compat/auth';
 import 'firebase/compat/firestore';
 
 export const firebaseConfig ={
-    apiKey: "AIzaSyAFMFz2UnV4lx-Kl5FTUpJ2YmebT7mqVFo",
-    authDomain: "otp-verification-c7ecd.firebaseapp.com",
-    projectId: "otp-verification-c7ecd",
-    storageBucket: "otp-verification-c7ecd.appspot.com",
-    messagingSenderId: "702798100011",
-    appId: "1:702798100011:web:e25b2ebe3fa0b0f5845c6e",
-    measurementId: "G-0SJ8SWNRXB"
+    apiKey: "AIzaSyC6YA2ORZ6QRSeA0ZouF-K2NEhx1DH1XN4",
+
+    authDomain: "collage-project-41974.firebaseapp.com",
+  
+    projectId: "collage-project-41974",
+  
+    storageBucket: "collage-project-41974.appspot.com",
+  
+    messagingSenderId: "294403933498",
+  
+    appId: "1:294403933498:web:4e0838bfcbdf8be59f3c03",
+  
+    measurementId: "G-JCPYC1XFVH"
+  
 };
 
 if (!firebase.apps.length){
