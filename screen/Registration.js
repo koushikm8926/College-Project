@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef,useEffect } from "react";
 import { styles, } from "../styles/Registration_Css";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
@@ -8,7 +8,8 @@ import {
     TouchableOpacity,
     SafeAreaView,
     TextInput, ScrollView, Image
-} from "react-native";
+} from "react-native"; 
+
 
 import { SelectList } from 'react-native-dropdown-select-list'
 import { firebaseConfig } from '../config';
