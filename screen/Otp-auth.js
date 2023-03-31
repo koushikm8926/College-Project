@@ -1,4 +1,4 @@
-import React,{useState} from "react";
+import React,{useState,useRef} from "react";
 import {
     View,
     Text,
@@ -7,30 +7,70 @@ import {
     TouchableOpacity,
     StyleSheet
 } from "react-native";
+
+
+import firebase from 'firebase/compat/app';
 import { firebaseConfig } from '../config';
 import { FirebaseRecaptchaVerifierModal } from 'expo-firebase-recaptcha';
-import firebase from 'firebase/compat/app';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 
 function Otp_auth({route,navigation}) {
-    const [code, setcode]=useState('')
+    const recaptchaVerifier = useRef(null);
+    
+    const [phonecode, setPhonecode]=useState('')
+    const [error, setError] = useState("");
 
-  const [check,SetCheck]=useState({
+
+  const [check,setCheck]=useState({
     verifyMail:"false",
     verifyPhone:"false"
   })
+  const [PhoneVeriytext , setPhoneVeriytext]=useState("verify")
+
   const verification=route.params.paramKey
   const regData=route.params.paramKey2
+
+  const checked = () => {
+    if (phonecode=="") {
+        setError("Please Enter All fild")
+        alert(error)
+    }
+    else{
+        navigate()
+    }
+}
+
+const ResendVerification = async () => {
+    setPhoneVeriytext("Verify")
+    setCheck({...check,verifyPhone:"false"})
+    setPhonecode("")
+
+    try {
+
+        const phoneProvider = new firebase.auth.PhoneAuthProvider();
+
+        await phoneProvider.verifyPhoneNumber(regData.phoneNumber, recaptchaVerifier.current)
+        alert("OTP send again ")
+        
+    }
+
+    catch (e) {
+        console.log(e)
+        alert(e)
+    }
+};
  
   
     const confirmCodePhone = async () => {
         try {
-            const credential = firebase.auth.PhoneAuthProvider.credential(verification, code);
+            const credential = firebase.auth.PhoneAuthProvider.credential(verification, phonecode);
 
             await firebase.auth().signInWithCredential(credential).then(() => { 
 
                 
-              SetCheck({...check,verifyPhone:"true"})
+              setCheck({...check,verifyPhone:"true"})
+              setPhoneVeriytext("Verified")
               console.log(check.verifyPhone)
               
 
@@ -39,7 +79,13 @@ function Otp_auth({route,navigation}) {
         } 
         catch (e) {
             console.log(e)
-            alert("Error", e)
+            if(PhoneVeriytext=="Verified"){
+                setError("The SMS code has expired. Please re-send the verification code to try again.")
+            }
+            else{
+                setError(e)
+            }
+            alert(error)
         }
     }
 
@@ -53,8 +99,16 @@ function Otp_auth({route,navigation}) {
     }
    }
     return (
-      
 
+        
+      
+        <KeyboardAwareScrollView ShowsVerticalScrollIndicator={false}>
+            <FirebaseRecaptchaVerifierModal
+                    style={{ margin: 100 }}
+                    ref={recaptchaVerifier}
+                    firebaseConfig={firebaseConfig}
+
+                />
         <SafeAreaView
          style={
             {
@@ -102,7 +156,8 @@ function Otp_auth({route,navigation}) {
                         backgroundColor: 'whitesmoke',
                         borderRadius: 30,
                         marginTop: 100,
-                        marginLeft: 20,
+                        marginLeft: "auto",
+                        marginRight:"auto",
                         padding: 20,
                         borderWidth: 2,
                         borderColor: '#a3c7c7'
@@ -149,13 +204,15 @@ function Otp_auth({route,navigation}) {
                         style={
                             styles.input
                     }
-                    onChangeText={code=>setcode(code)} 
+                    value={phonecode}
+                    onChangeText={phonecode=>setPhonecode(phonecode)} 
                     ></TextInput>
 
 
                     <TouchableOpacity style={
                         styles.button1
-                    }>
+                    }
+                    onPress={ResendVerification}>
 
                         <Text style={
                             styles.text3
@@ -170,14 +227,14 @@ function Otp_auth({route,navigation}) {
 
                         <Text style={
                             styles.text4
-                        }>Verify</Text>
+                        }>{PhoneVeriytext}</Text>
                     </TouchableOpacity>
 
 
                     <TouchableOpacity style={
                         styles.button5
                     }
-                    onPress={navigate}>
+                    onPress={checked}>
 
                         <Text style={
                             styles.text5
@@ -189,6 +246,7 @@ function Otp_auth({route,navigation}) {
             </View>
 
         </SafeAreaView>
+        </KeyboardAwareScrollView>
 
     )
 }
