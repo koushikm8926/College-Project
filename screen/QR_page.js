@@ -1,6 +1,6 @@
 
 import React,{ useState } from "react";
-import { styles } from "../styles/login page style";
+import { styles } from "../styles/Registration_Css";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import { 
